@@ -1,0 +1,149 @@
+
+GET http://localhost/api/food
+
+
+###
+
+
+
+GET http://localhost/api/food/766 HTTP/1.1
+content-type: application/json
+
+
+###
+
+DELETE http://localhost/api/food/1639 HTTP/1.1
+content-type: application/json
+
+
+###
+
+
+
+POST http://localhost/api/food/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Соус в баночке",
+    "section": "57599",
+    "price": "50",
+    "images":["https://reservationsteps.ru/files/88/05/8805d5006779ae0999a6bde021020d8e_1050x600.jpg","https://reservationsteps.ru/files/97/d9/97d9a0a8a35332c82009e8b36af6d874_1050x600.jpg"],
+    "info": "<ul><li>соус</li><li>баночка</li><li>любовь</li></ul>"
+}
+
+###
+
+
+
+
+PUT http://localhost/api/food/765 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Пица с ананасами",
+    "section": "57571",
+    "price": "300",
+    "images":["https://reservationsteps.ru/files/88/05/8805d5006779ae0999a6bde021020d8e_1050x600.jpg","https://reservationsteps.ru/files/97/d9/97d9a0a8a35332c82009e8b36af6d874_1050x600.jpg"],
+    "info": "<ul><li>тесто</li><li>ананасы</li><li>мясо</li></ul>"
+}
+
+###
+
+
+
+POST http://localhost/api/section/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Прочее"
+}
+
+###
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PATCH https://wary-spectrum-mallet.glitch.me/users/0 HTTP/1.1
+content-type: application/json
+
+{
+    "login": "Mather",
+    "password": "I-love-c00kie$1",
+    "token": "0_8938du3j98duu34jd"
+}
+
+###
+
+DELETE https://wary-spectrum-mallet.glitch.me/users/2 HTTP/1.1
+
+
+###
+
+
+
+
+
+
+
+
+###
+
+GET https://wary-spectrum-mallet.glitch.me/contacts HTTP/1.1
+
+
+###
+
+GET https://wary-spectrum-mallet.glitch.me/contacts?token=2_22222 HTTP/1.1
+
+
+
+###
+
+POST https://wary-spectrum-mallet.glitch.me/contacts HTTP/1.1
+content-type: application/json
+
+{"id":"","token":"1_11111","name":"цвцвцйв","fio":"уацуацуац","telephone":"+1 (111) 111-1111","email":"уцацуа"}
+
+###
+
+PATCH https://wary-spectrum-mallet.glitch.me/contacts/xDXRF8v HTTP/1.1
+content-type: application/json
+
+{
+    "id": "xDXRF8v",
+    "token": "1_11111",
+    "name": "Qonwotejnka",
+    "fio": "qqqqqqq",
+    "telephone": "+79172333435",
+    "email": "Qonwotejnka@mail.com"
+}
+
+###
+
+GET https://wary-spectrum-mallet.glitch.me/contacts/xDXRF8v HTTP/1.1
+
+###
+
+DELETE https://wary-spectrum-mallet.glitch.me/contacts/11 HTTP/1.1
