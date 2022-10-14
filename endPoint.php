@@ -11,6 +11,20 @@ function findById($baseData, $itemId) {
     return ["key" => "error", "value" => "error"];
 }
 
+//обновление версии базы
+function updateVersion($name) {
+    $versionsFileName = 'base/_versions.txt';
+    $versions = json_decode(file_get_contents($versionsFileName));
+    if ($versions===NULL) {
+        $versions = json_decode(json_encode(array($name => 0)));
+    }
+    if (!property_exists($versions, $name)) {
+        $versions->$name = 0;
+    }
+    $versions->$name++;
+    file_put_contents($versionsFileName, json_encode($versions));
+    exit;
+}
 
 // Роутер
 function route($method, $urlData, $formData, $endPoint) {
@@ -28,13 +42,16 @@ function route($method, $urlData, $formData, $endPoint) {
     $baseData = json_decode($base);
     $itemId = $urlData[0];
 
+    
     // Добавление нового элемента
     // POST /food
     if ($method === 'POST' && empty($urlData)) {
-        // Добавляем товар в базу...
-        $baseData[] = array_merge(
+        updateVersion($endPoint);
+        // Добавляем элемент в базу...
+        $newData = array_merge(
             array('id' => time()-1665684000),
             $formData);
+        $baseData[] = $newData;
         file_put_contents($baseFileName, json_encode($baseData));
         // Выводим ответ клиенту
         echo json_encode($newData);
@@ -60,7 +77,8 @@ function route($method, $urlData, $formData, $endPoint) {
     // Обновление всех данных элемента
     // PUT /food/{itemId}
     if ($method === 'PUT' && count($urlData) === 1) {
-        // Обновляем все поля товара в базе...
+        updateVersion($endPoint);
+        // Обновляем все поля элемента в базе...
         foreach ($baseItem["value"] as $key => $value) {
             if ($key!=='id') {
                 $baseItem["value"]->$key = $formData[$key];
@@ -74,10 +92,11 @@ function route($method, $urlData, $formData, $endPoint) {
     }
 
 
-    // Удаление товара
+    // Удаление элемента
     // DELETE /food/{itemId}
     if ($method === 'DELETE' && count($urlData) === 1) {
-        // Удаляем товар из базы...
+        updateVersion($endPoint);
+        // Удаляем элемент из базы...
         array_splice($baseData, $baseItemKey, 1);
         file_put_contents($baseFileName, json_encode($baseData));
         // Выводим ответ клиенту

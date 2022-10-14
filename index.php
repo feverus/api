@@ -3,6 +3,7 @@ include_once 'dropError.php';
 include_once 'endPoint.php';
 
 $allowedRouters = [
+    '_versions',
     'food',
     'section'
 ];
@@ -31,7 +32,7 @@ $url = (isset($_GET['q'])) ? $_GET['q'] : '';
 $url = rtrim($url, '/');
 $urls = explode('/', $url);
 
-// Определяем роутер и url data
+// Определяем базу и url data
 $endPoint = $urls[0];
 
 if (array_search($endPoint, $allowedRouters)===false) {
@@ -39,8 +40,8 @@ if (array_search($endPoint, $allowedRouters)===false) {
 }
 $urlData = array_slice($urls, 1);
 
-// Подключаем файл-роутер и запускаем главную функцию
-
+//инициализация файлов баз
 testBase($endPoint);
-testBase('');
+testBase('_versions');
+// Подключаем файл-роутер и запускаем главную функцию
 route($method, $urlData, $formData, $endPoint);

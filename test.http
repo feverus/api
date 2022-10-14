@@ -5,6 +5,11 @@ GET http://localhost/api/food
 ###
 
 
+GET http://localhost/api/_versions
+
+
+###
+
 
 GET http://localhost/api/food/766 HTTP/1.1
 content-type: application/json
@@ -12,7 +17,7 @@ content-type: application/json
 
 ###
 
-DELETE http://localhost/api/food/1639 HTTP/1.1
+DELETE http://localhost/api/section/57571 HTTP/1.1
 content-type: application/json
 
 
