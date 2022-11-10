@@ -5,8 +5,16 @@ include_once 'endPoint.php';
 $allowedRouters = [
     '_versions',
     'food',
-    'section'
+    'section',
+	'tag'
 ];
+
+//вывод отладочной информации
+file_put_contents('log.txt', 
+    "_GET\r\n".implode($_GET).
+    "\r\n_POST\r\n".implode($_POST).
+    "\r\n_FILES\r\n".implode($_FILES).
+	"\r\ninput\r\n".file_get_contents('php://input'));
 
 // Получение данных из тела запроса
 function getFormData() {
@@ -23,6 +31,14 @@ function testBase($fileName) {
 
 // Определяем метод запроса
 $method = $_SERVER['REQUEST_METHOD'];
+
+//для Preflight request
+if ($method=='OPTIONS') {
+    header('HTTP/1.1 204 No Content');
+	header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
+	header('Access-Control-Allow-Headers: x-requested-with, Content-Type, origin, authorization, accept, x-access-token');
+    exit;
+}
 
 // Получаем данные из тела запроса
 $formData = getFormData();

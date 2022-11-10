@@ -11,7 +11,7 @@ GET http://localhost/api/_versions
 ###
 
 
-GET http://localhost/api/food/766 HTTP/1.1
+GET http://localhost/api/food/248511 HTTP/1.1
 content-type: application/json
 
 
@@ -29,11 +29,11 @@ POST http://localhost/api/food/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Соус в баночке",
+    "name": "Тест",
     "section": "57599",
     "price": "50",
-    "images":["https://reservationsteps.ru/files/88/05/8805d5006779ae0999a6bde021020d8e_1050x600.jpg","https://reservationsteps.ru/files/97/d9/97d9a0a8a35332c82009e8b36af6d874_1050x600.jpg"],
-    "info": "<ul><li>соус</li><li>баночка</li><li>любовь</li></ul>"
+    "images":[],
+    "info": ""
 }
 
 ###
@@ -66,6 +66,12 @@ content-type: application/json
 ###
 
 
+
+
+OPTIONS http://localhost/api/food/675531 HTTP/1.1
+content-type: application/json
+
+###
 
 
 

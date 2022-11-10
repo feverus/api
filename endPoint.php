@@ -23,11 +23,22 @@ function updateVersion($name) {
     }
     $versions->$name++;
     file_put_contents($versionsFileName, json_encode($versions));
-    exit;
 }
 
 // Роутер
-function route($method, $urlData, $formData, $endPoint) {
+function route($method, $urlData, $formData, $endPoint) {	
+
+	if (($method === 'PUT') and false) {
+		echo '$method';
+		var_dump($method);
+		echo '$urlData';
+		var_dump($urlData);
+		echo '$formData';
+		var_dump($formData);
+		echo '$endPoint';
+		var_dump($endPoint);
+	}
+
     $baseFileName = 'base/'.$endPoint.'.txt';
     $base = file_get_contents($baseFileName);
 
@@ -41,7 +52,6 @@ function route($method, $urlData, $formData, $endPoint) {
 
     $baseData = json_decode($base);
     $itemId = $urlData[0];
-
     
     // Добавление нового элемента
     // POST /food
