@@ -1,5 +1,17 @@
 <?php
 
+function deleteDir($path) {
+    if (is_dir($path) === true) {
+        $files = array_diff(scandir($path), array('.', '..'));
+        foreach ($files as $file) {
+            deleteDir(realpath($path) . '/' . $file);
+        }
+        return rmdir($path);
+    } else if (is_file($path) === true) {
+        return unlink($path);
+    }
+    return false;
+}
 
 //поиск запрошенного элемента в базе
 function findById($baseData, $itemId) {
@@ -25,19 +37,74 @@ function updateVersion($name) {
     file_put_contents($versionsFileName, json_encode($versions));
 }
 
-// Роутер
-function route($method, $urlData, $formData, $endPoint) {	
-
-	if (($method === 'PUT') and false) {
-		echo '$method';
-		var_dump($method);
-		echo '$urlData';
-		var_dump($urlData);
-		echo '$formData';
-		var_dump($formData);
-		echo '$endPoint';
-		var_dump($endPoint);
+//обработка изображений
+function workWithImg($method, $files, $itemId, $formData) {	
+	if ($method === 'POST') {
+		//создаем директорию
+		$path = 'base/_images/' . $itemId . '/';
+		@mkdir($path, 0755, true);
+		foreach ($files as $key => $file) {
+			if ($file && $file["error"]== UPLOAD_ERR_OK) {
+				$name = $path.$file["name"];
+				move_uploaded_file($file["tmp_name"], $name);
+				$newData[] = [$name];
+			}	
+		}
+		if (isset($newData)) echo json_encode($newData);
+		else echo '[]';
+		return;	
 	}
+	if ($method === 'DELETE') {
+		foreach ($formData as $key => $file) {
+			$localFile = $file;
+			while ((strlen($localFile)>0) and (strpos($localFile, 'base/_images/')!==0)) {
+				$localFile = substr($localFile, 1);
+			}
+			if (strlen($localFile)>0) @unlink($localFile);
+		}
+		return;
+	}
+}
+
+//логин
+function login($method, $endPoint, $formData) {	
+	$token = '';
+	$login = '';
+	$password = '';
+	$token = '';
+	$role = 'client';
+	$_logins = file('base/_logins.txt');
+	$logins = [];
+	
+	foreach ($_logins as $key => $value) {
+		if (($value[0]!=='#') and (strlen($value)>5)) {
+			$logins[] = explode(" ", $value);
+		}
+	}
+	
+	foreach ($formData as $key => $value) {
+		if ($key==='token') $token = trim($value);
+		if ($key==='login') $login = trim($value);
+		if ($key==='password') $password = trim($value);
+	}
+	
+	if ($token!=='') {
+		foreach ($logins as $key => $value) {
+			if (trim($value[3])===$token) $role = $value[0];
+		}
+	}
+	
+	if (($login!=='') and ($password!=='')) {
+		foreach ($logins as $key => $value) {
+			if (($value[1]===$login) and ($value[2]===$password)) $role = $value[0];
+		}
+	}
+	
+	return $role;
+}
+
+// Роутер
+function route($method, $urlData, $formData, $endPoint, $files) {	
 
     $baseFileName = 'base/'.$endPoint.'.txt';
     $base = file_get_contents($baseFileName);
@@ -50,24 +117,34 @@ function route($method, $urlData, $formData, $endPoint) {
         return;
     }
 
-    $baseData = json_decode($base);
-    $itemId = $urlData[0];
-    
+	$baseData = json_decode($base);
+	
+	if ($endPoint=='_logins') {
+		$role = login($method, $endPoint, $formData);
+		echo $role;
+		return;
+	}
+	
     // Добавление нового элемента
     // POST /food
     if ($method === 'POST' && empty($urlData)) {
         updateVersion($endPoint);
         // Добавляем элемент в базу...
-        $newData = array_merge(
-            array('id' => time()-1665684000),
-            $formData);
-        $baseData[] = $newData;
+		$formData['id'] = time()-1665684000;
+        $baseData[] = $formData;
         file_put_contents($baseFileName, json_encode($baseData));
         // Выводим ответ клиенту
-        echo json_encode($newData);
+        echo json_encode($formData);
         return;
     }
-
+	
+    $itemId = $urlData[0];
+	
+	if ($endPoint=='_images') {
+		workWithImg($method, $files, $itemId, $formData);
+		return;
+	}
+	
     //поиск в базе
     $baseItem = findById($baseData, $itemId);
     $baseItemKey = $baseItem["key"];
@@ -109,6 +186,9 @@ function route($method, $urlData, $formData, $endPoint) {
         // Удаляем элемент из базы...
         array_splice($baseData, $baseItemKey, 1);
         file_put_contents($baseFileName, json_encode($baseData));
+		//удаляем изображения
+		$path = 'base/_images/' . $itemId . '/';
+		@deleteDir($path);
         // Выводим ответ клиенту
         echo json_encode(array(
             'method' => 'DELETE',

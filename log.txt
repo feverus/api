@@ -1,8 +1,5 @@
 _GET
-food/675538
+section
 _POST
 
-_FILES
-
 input
-{"id":"","name":"Тест 2","section":"253979","price":"1212","images":["https://evgeny.fun/eatery/test_images/1.jpg","https://evgeny.fun/eatery/test_images/2.jpg"],"info":"<ul>\n<li>пицца</li>\n<li>ананасы</li>\n<li>ненависть</li>\n<li>четвертый элемент</li>\n</ul>\n"}

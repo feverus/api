@@ -4,6 +4,8 @@ include_once 'endPoint.php';
 
 $allowedRouters = [
     '_versions',
+    '_images',	
+    '_logins',	
     'food',
     'section',
 	'tag'
@@ -13,7 +15,6 @@ $allowedRouters = [
 file_put_contents('log.txt', 
     "_GET\r\n".implode($_GET).
     "\r\n_POST\r\n".implode($_POST).
-    "\r\n_FILES\r\n".implode($_FILES).
 	"\r\ninput\r\n".file_get_contents('php://input'));
 
 // Получение данных из тела запроса
@@ -60,4 +61,4 @@ $urlData = array_slice($urls, 1);
 testBase($endPoint);
 testBase('_versions');
 // Подключаем файл-роутер и запускаем главную функцию
-route($method, $urlData, $formData, $endPoint);
+route($method, $urlData, $formData, $endPoint, $_FILES);
