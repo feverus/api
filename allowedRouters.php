@@ -2,17 +2,16 @@
 
 //служебные роутеры для работы api
 $defaultRouters = [
-    '_versions',
-    '_images',
-    '_logins'
+    '_images' => ['root'],
+    '_logins' => ['all']
 ];
 
 //список баз данных
 $customRouters = [
-    'food',
-    'section',
-	'tag',
-    'order'
+    'food' => ['root'],
+    'section' => ['root'],
+	'tag' => ['root'],
+    'order' => ['all']
 ];
 
 $allowedRouters = array_merge($defaultRouters, $customRouters);

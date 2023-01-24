@@ -45,7 +45,8 @@ $urls = explode('/', $url);
 // Определяем базу и url data
 $endPoint = $urls[0];
 
-if (array_search($endPoint, $allowedRouters)===false) {
+
+if (!isset($allowedRouters[$endPoint])) {
     dropError('Bad Request');
 }
 

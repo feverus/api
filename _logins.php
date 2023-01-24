@@ -1,38 +1,56 @@
 <?php
 
 //логин
-function login($method, $endPoint, $formData) {
+function login($formData) {
 	$token = '';
 	$login = '';
 	$password = '';
 	$token = '';
 	$role = 'client';
-	$_logins = file('base/_logins.txt');
+	$baseLogins = file('base/_logins.txt');
 	$logins = [];
 	
-	foreach ($_logins as $key => $value) {
-		if (($value[0]!=='#') and (strlen($value)>5)) {
+	foreach ($baseLogins as $key => $value) {
+		if (($value[0]!=='#') && (strlen($value)>5)) {
 			$logins[] = explode(" ", $value);
 		}
 	}
 	
-	foreach ($formData as $key => $value) {
-		if ($key==='token') $token = trim($value);
-		if ($key==='login') $login = trim($value);
-		if ($key==='password') $password = trim($value);
+	if (!empty($formData)) {
+		foreach ($formData as $key => $value) {
+			switch ($key) {
+				case 'token':
+					$token = trim($value);
+					break;
+				case 'login':
+					$login = trim($value);
+					break;
+				case 'password':
+					$password = trim($value);
+					break;
+				default:
+					break;
+			}
+		}
 	}
+
 	
 	if ($token!=='') {
 		foreach ($logins as $key => $value) {
-			if (trim($value[3])===$token) $role = $value[0];
+			if (trim($value[3])===$token) {$role = $value[0];}
 		}
 	}
 	
-	if (($login!=='') and ($password!=='')) {
+	if (($login!=='') && ($password!=='')) {
 		foreach ($logins as $key => $value) {
-			if (($value[1]===$login) and ($value[2]===$password)) $role = $value[0];
+			if (($value[1]===$login) && ($value[2]===$password)) {
+				$role = $value[0];
+				$token = trim($value[3]);
+			}
 		}
 	}
+
+	setcookie("token", $token, time()+2_592_000);
 	
 	return $role;
 }

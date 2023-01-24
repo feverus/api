@@ -62,4 +62,4 @@ http://localhost/api/{database_name}/archive/{id}
 
 Вывод списка всех элементов в временном промежутке. Даты указывать в формате 2022_01_01/2022_12_31
 
-http://localhost/api/{database_name}/archive/{startyear_month_day}/{endyear_month_day}
+http://localhost/api/{database_name}/archive/{startYear_month_day}/{endYear_month_day}

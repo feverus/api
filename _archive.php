@@ -21,11 +21,30 @@ function move($endPoint, $itemId) {
     $base = file_get_contents($fileName);
     $baseData = json_decode($base);
 
-    addItem($fileName, $baseData, json_decode(json_encode($baseItem["value"]), true));
+    $baseItem = json_decode(json_encode($baseItem["value"]), true);
+    $baseItem["time"] = Date("U");
+
+    addItem($fileName, $baseData, $baseItem);
 
     echo json_encode(array(
         'id' => $itemId
     ));
+}
+
+function showStat($endPoint, $start, $end) {
+    echo '[';
+    for ($year = $start[0]; $year <= $end[0]; $year++) {
+        for ($month = $start[1]; $month <= $end[1]; $month++) {
+            for ($day = $start[2]; $day <= $end[2]; $day++) {
+                $fileName = 'base/_archive/' . $endPoint . '/' . $year . '/' . $month . '/' . $day . '.txt';
+                if (file_exists($fileName)) {
+                    $base = file_get_contents($fileName);
+                    echo substr($base, 1, -1);
+                }
+            }
+        }
+    }
+    echo ']';
 }
 
 function archive($endPoint, $urlData) {
@@ -34,6 +53,7 @@ function archive($endPoint, $urlData) {
         move($endPoint, $urlData[0]);
     } elseif (count($urlData)===2) {
         //передан диапазон дат, собираем статистику
+        showStat($endPoint, explode('_', $urlData[0]), explode('_', $urlData[1]));
     } else {
         dropError('Bad Request');
     }

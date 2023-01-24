@@ -1,5 +1,10 @@
 
-GET http://localhost/api/food/archive/675487
+GET http://localhost/api/food/archive/2023_1_23/2023_2_24
+
+
+###
+
+GET http://localhost/api/food/archive/248511
 
 
 ###
@@ -34,6 +39,15 @@ content-type: application/json
     "price": "50",
     "images":[],
     "info": ""
+}
+
+###
+
+GET http://localhost/api/_logins/ HTTP/1.1
+content-type: application/json
+
+{
+    "token": "3ECD351E0AD7A00692CBEBCC5AE28234"
 }
 
 ###
