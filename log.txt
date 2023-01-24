@@ -1,5 +1,5 @@
 _GET
-section
+food/248511
 _POST
 
 input

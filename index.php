@@ -1,18 +1,10 @@
 <?php
 include_once 'dropError.php';
 include_once 'endPoint.php';
-
-$allowedRouters = [
-    '_versions',
-    '_images',	
-    '_logins',	
-    'food',
-    'section',
-	'tag'
-];
+include_once 'allowedRouters.php';
 
 //вывод отладочной информации
-file_put_contents('log.txt', 
+file_put_contents('log.txt',
     "_GET\r\n".implode($_GET).
     "\r\n_POST\r\n".implode($_POST).
 	"\r\ninput\r\n".file_get_contents('php://input'));
@@ -21,6 +13,7 @@ file_put_contents('log.txt',
 function getFormData() {
     return json_decode(file_get_contents('php://input'), true);
 }
+
 //проверяем, существует ли файл с базой
 function testBase($fileName) {
     $fileName='base/'.$fileName.'.txt';
@@ -55,6 +48,9 @@ $endPoint = $urls[0];
 if (array_search($endPoint, $allowedRouters)===false) {
     dropError('Bad Request');
 }
+
+//
+
 $urlData = array_slice($urls, 1);
 
 //инициализация файлов баз

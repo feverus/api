@@ -7,7 +7,7 @@ function deleteDir($path) {
             deleteDir(realpath($path) . '/' . $file);
         }
         return rmdir($path);
-    } else if (is_file($path) === true) {
+    } elseif (is_file($path) === true) {
         return unlink($path);
     }
     return false;
@@ -48,16 +48,16 @@ function workWithImg($method, $files, $itemId, $formData) {
 				$name = $path.$file["name"];
 				move_uploaded_file($file["tmp_name"], $name);
 				$newData[] = [$name];
-			}	
+			}
 		}
 		if (isset($newData)) echo json_encode($newData);
 		else echo '[]';
-		return;	
+		return;
 	}
 	if ($method === 'DELETE') {
 		foreach ($formData as $key => $file) {
 			$localFile = $file;
-			while ((strlen($localFile)>0) and (strpos($localFile, 'base/_images/')!==0)) {
+			while ((strlen($localFile)>0) && (strpos($localFile, 'base/_images/')!==0)) {
 				$localFile = substr($localFile, 1);
 			}
 			if (strlen($localFile)>0) @unlink($localFile);
@@ -153,7 +153,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
         dropError('id not found');
     }
 
-    // Получение информации о элемента
+    // Получение информации о элементе
     // GET /food/{itemId}
     if ($method === 'GET' && count($urlData) === 1) {
         // Выводим ответ клиенту
