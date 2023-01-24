@@ -49,9 +49,13 @@ if (array_search($endPoint, $allowedRouters)===false) {
     dropError('Bad Request');
 }
 
-//
-
 $urlData = array_slice($urls, 1);
+
+//архивация - перенос элемента из /base/{database_name} в /base/_archive/{database_name}/{year}/{month}/{day}.txt
+if (!empty($urlData) && ($urlData[0]==='archive')) {
+    $method = 'ARCHIVE';
+    $urlData = array_slice($urlData, 1);
+}
 
 //инициализация файлов баз
 testBase($endPoint);

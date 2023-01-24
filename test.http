@@ -1,5 +1,5 @@
 
-GET http://localhost/api/food
+GET http://localhost/api/food/archive/675487
 
 
 ###
