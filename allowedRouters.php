@@ -12,7 +12,7 @@
 
 //служебные роутеры для работы api
 $defaultRouters = [
-    '_images' =>    ['read'=>[], 'write'=>[]],
+    '_images' =>    ['read'=>[], 'write'=>['admin']],
     '_versions' =>  ['read'=>['all'], 'write'=>[]],
     '_logins' =>    ['read'=>[], 'write'=>[]]
 ];

@@ -18,6 +18,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
 	}
 
     if ($endPoint=='_images') {
+        checkAccess($endPoint, 'write');
 		workWithImg($method, $files, empty($urlData) ? 'noid' : $urlData[0], $formData);
 		return;
 	}
