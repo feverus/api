@@ -50,9 +50,11 @@ function showStat($endPoint, $start, $end) {
 function archive($endPoint, $urlData) {
     if (count($urlData)===1) {
         //передан id, перемещаем его в архив
+        checkAccess($endPoint, 'write');
         move($endPoint, $urlData[0]);
     } elseif (count($urlData)===2) {
         //передан диапазон дат, собираем статистику
+        checkAccess($endPoint, 'read');
         showStat($endPoint, explode('_', $urlData[0]), explode('_', $urlData[1]));
     } else {
         dropError('Bad Request');

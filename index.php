@@ -1,7 +1,6 @@
 <?php
 include_once 'dropError.php';
 include_once 'endPoint.php';
-include_once 'allowedRouters.php';
 
 //вывод отладочной информации
 file_put_contents('log.txt',

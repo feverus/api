@@ -16,7 +16,7 @@ GET http://localhost/api/_versions
 ###
 
 
-GET http://localhost/api/food/248511 HTTP/1.1
+GET http://localhost/api/order HTTP/1.1
 content-type: application/json
 
 
@@ -43,11 +43,12 @@ content-type: application/json
 
 ###
 
-GET http://localhost/api/_logins/ HTTP/1.1
+POST http://localhost/api/order/ HTTP/1.1
 content-type: application/json
 
 {
-    "token": "3ECD351E0AD7A00692CBEBCC5AE28234"
+    "foodId": "1",
+    "price": "50"
 }
 
 ###

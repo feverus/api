@@ -1,12 +1,15 @@
 <?php
+include_once 'allowedRouters.php';
 include_once '_versions.php';
-include_once '_images.php';
 include_once '_logins.php';
-include_once '_common.php';
-include_once '_archive.php';
+include_once 'images.php';
+include_once 'common.php';
+include_once 'archive.php';
+include_once 'checkAccess.php';
 
 // Роутер
 function route($method, $urlData, $formData, $endPoint, $files) {
+    global $allowedRouters;
 
     if ($endPoint=='_logins') {
 		$role = login($method, $endPoint, $formData);
@@ -32,6 +35,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
         // Получение всей базы
         // GET /food/
         if ($method === 'GET') {
+            checkAccess($endPoint, 'read');
             // Выводим ответ клиенту
             echo $base;
             return;
