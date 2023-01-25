@@ -12,6 +12,4 @@ function updateVersion($name) {
     }
     $versions->$name++;
     file_put_contents($versionsFileName, json_encode($versions));
-
-    return $versions->$name;
 }

@@ -33,7 +33,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
 
     if (empty($urlData)) {
         // Получение всей базы
-        // GET /food/
+        // GET /food
         if ($method === 'GET') {
             checkAccess($endPoint, 'read');
             // Выводим ответ клиенту
@@ -44,7 +44,12 @@ function route($method, $urlData, $formData, $endPoint, $files) {
         // Добавление нового элемента
         // POST /food
         if ($method === 'POST') {
+            checkAccess($endPoint, 'write');
             updateVersion($endPoint);
+
+            $formData['id'] = ($allowedRouters[$endPoint]['read']===['all']) ?
+            time()-1665684000 : generateString();
+
             addItem($baseFileName, $baseData, $formData);
             // Выводим ответ клиенту
             echo json_encode($formData);
@@ -65,23 +70,31 @@ function route($method, $urlData, $formData, $endPoint, $files) {
         // Получение информации о элементе
         // GET /food/{itemId}
         if ($method === 'GET') {
+            checkAccess($endPoint, 'read');
             // Выводим ответ клиенту
             echo json_encode($baseItem["value"]);
             return;
         }
     
-        // Обновление всех данных элемента
+        // Обновление данных элемента
         // PUT /food/{itemId}
         if ($method === 'PUT') {
+            checkAccess($endPoint, 'write');
             updateVersion($endPoint);
-            putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey);
+
+            $mode = ($allowedRouters[$endPoint]['write']===['all']) ?
+            'inc' : 'full';
+
+            putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $mode);
             return;
         }
     
         // Удаление элемента
         // DELETE /food/{itemId}
         if ($method === 'DELETE') {
+            checkAccess($endPoint, 'write');
             updateVersion($endPoint);
+
             deleteItem($baseFileName, $baseData, $baseItemKey, $itemId);
             // Выводим ответ клиенту
             echo json_encode(array(

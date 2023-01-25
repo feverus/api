@@ -1,5 +1,15 @@
 <?php
 
+function generateString($max = 10) {
+    $input = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $inputLength = strlen($input);
+    $output = '';
+    for($i = 0; $i <= $max; $i++) {
+        $output .= $input[mt_rand(0, $inputLength - 1)];
+    }
+    return $output;
+}
+
 function deleteDir($path) {
     if (is_dir($path) === true) {
         $files = array_diff(scandir($path), array('.', '..'));
@@ -25,18 +35,42 @@ function findById($baseData, $itemId) {
 
 function addItem($baseFileName, $baseData, $formData) {
     // Добавляем элемент в базу...
-    $formData['id'] = time()-1665684000;
     $baseData[] = $formData;
     file_put_contents($baseFileName, json_encode($baseData));
 }
 
-function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey) {
-    // Обновляем все поля элемента в базе...
-    foreach ($baseItem["value"] as $key => $value) {
-        if ($key!=='id') {
-            $baseItem["value"]->$key = $formData[$key];
-        }
+//оборачивает не массив в массив или избавляется от stdClass object
+function wrapVarToArray($var) {
+    if (gettype($var)!=='array') {
+        $var = [$var];
+    } else {
+        $var = json_decode(json_encode($var), true);
     }
+    return $var;
+}
+
+function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $mode = 'full') {
+    // Обновляем все поля элемента в базе...
+    if ($mode==='full') {
+        foreach ($baseItem["value"] as $key => $value) {
+            if ($key!=='id') {
+                $baseItem["value"]->$key = $formData[$key];
+            }
+        }
+    } elseif ($mode==='inc') {
+        foreach ($baseItem["value"] as $key => $value) {
+            if ($key!=='id') {
+                $baseItem["value"]->$key = wrapVarToArray($baseItem["value"]->$key);
+                $formData[$key] = wrapVarToArray($formData[$key]);
+                              
+                //объединяем старые и новые данные
+                $baseItem["value"]->$key = array_merge($baseItem["value"]->$key, $formData[$key]);
+            }
+        }
+    } else {
+        exit;
+    }
+
     $baseData[$baseItemKey] = $baseItem["value"];
     file_put_contents($baseFileName, json_encode($baseData));
     // Выводим ответ клиенту
