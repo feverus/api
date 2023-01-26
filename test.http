@@ -16,7 +16,7 @@ GET http://localhost/api/_versions
 ###
 
 
-GET http://localhost/api/order HTTP/1.1
+GET http://localhost/api/food HTTP/1.1
 content-type: application/json
 
 
@@ -94,89 +94,3 @@ OPTIONS http://localhost/api/food/675531 HTTP/1.1
 content-type: application/json
 
 ###
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-PATCH https://wary-spectrum-mallet.glitch.me/users/0 HTTP/1.1
-content-type: application/json
-
-{
-    "login": "Mather",
-    "password": "I-love-c00kie$1",
-    "token": "0_8938du3j98duu34jd"
-}
-
-###
-
-DELETE https://wary-spectrum-mallet.glitch.me/users/2 HTTP/1.1
-
-
-###
-
-
-
-
-
-
-
-
-###
-
-GET https://wary-spectrum-mallet.glitch.me/contacts HTTP/1.1
-
-
-###
-
-GET https://wary-spectrum-mallet.glitch.me/contacts?token=2_22222 HTTP/1.1
-
-
-
-###
-
-POST https://wary-spectrum-mallet.glitch.me/contacts HTTP/1.1
-content-type: application/json
-
-{"id":"","token":"1_11111","name":"цвцвцйв","fio":"уацуацуац","telephone":"+1 (111) 111-1111","email":"уцацуа"}
-
-###
-
-PATCH https://wary-spectrum-mallet.glitch.me/contacts/xDXRF8v HTTP/1.1
-content-type: application/json
-
-{
-    "id": "xDXRF8v",
-    "token": "1_11111",
-    "name": "Qonwotejnka",
-    "fio": "qqqqqqq",
-    "telephone": "+79172333435",
-    "email": "Qonwotejnka@mail.com"
-}
-
-###
-
-GET https://wary-spectrum-mallet.glitch.me/contacts/xDXRF8v HTTP/1.1
-
-###
-
-DELETE https://wary-spectrum-mallet.glitch.me/contacts/11 HTTP/1.1

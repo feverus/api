@@ -1,10 +1,5 @@
 _GET
-order/1
+food
 _POST
 
 input
-{
-    "food": "food?",
-    "foodId": "1",
-    "price": "50"
-}

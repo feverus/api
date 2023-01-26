@@ -71,7 +71,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
         // Получение информации о элементе
         // GET /food/{itemId}
         if ($method === 'GET') {
-            checkAccess($endPoint, 'read');
+            checkAccess($endPoint, 'readOneItem');
             // Выводим ответ клиенту
             echo json_encode($baseItem["value"]);
             return;

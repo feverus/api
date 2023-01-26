@@ -25,6 +25,7 @@ function deleteDir($path) {
 
 //поиск запрошенного элемента в базе
 function findById($baseData, $itemId) {
+
     foreach($baseData as $key => $value) {
         if ($value->id == $itemId) {
             return ["key" => $key, "value" => $value];
