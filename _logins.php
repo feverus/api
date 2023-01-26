@@ -15,7 +15,7 @@ function login($formData) {
 			$logins[] = explode(" ", $value);
 		}
 	}
-	
+
 	if (!empty($formData)) {
 		foreach ($formData as $key => $value) {
 			switch ($key) {

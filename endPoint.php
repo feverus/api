@@ -12,7 +12,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
     global $allowedRouters;
 
     if ($endPoint=='_logins') {
-		$role = login($method, $endPoint, $formData);
+		$role = login($formData);
 		echo $role;
 		return;
 	}
