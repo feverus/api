@@ -50,7 +50,7 @@ function login($formData) {
 		}
 	}
 
-	setcookie('token', $token, time()+2_592_000, '/');
-	
+	if ($token!=='') setcookie('token', $token, time()+2_592_000, '/');
+
 	return $role;
 }

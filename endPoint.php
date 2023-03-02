@@ -13,6 +13,9 @@ function route($method, $urlData, $formData, $endPoint, $files) {
 
     if ($endPoint=='_logins') {
 		$role = login($formData);
+        if ($role==='client') {
+            header('HTTP/1.0 401');
+        }
 		echo $role;
 		return;
 	}
