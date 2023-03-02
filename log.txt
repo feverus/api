@@ -1,6 +1,5 @@
 _GET
-_logins
+section
 _POST
 
 input
-{"login":"","password":""}

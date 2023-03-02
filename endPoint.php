@@ -16,7 +16,6 @@ function route($method, $urlData, $formData, $endPoint, $files) {
         if ($role==='client') {
             header('HTTP/1.0 401');
         }
-		echo $role;
 		return;
 	}
 
