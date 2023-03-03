@@ -10,7 +10,14 @@ file_put_contents('log.txt',
 
 // Получение данных из тела запроса
 function getFormData() {
-    return json_decode(file_get_contents('php://input'), true);
+    preg_match('/\{.+\}/s', file_get_contents('php://input'), $json);
+    
+    //var_dump($json); exit;
+
+    if (count($json) > 0) {
+        return json_decode($json[0], true);
+    }
+    return '{}';
 }
 
 //проверяем, существует ли файл с базой
@@ -61,4 +68,6 @@ if (!empty($urlData) && ($urlData[0]==='archive')) {
 testBase($endPoint);
 testBase('_versions');
 // Подключаем файл-роутер и запускаем главную функцию
+
+
 route($method, $urlData, $formData, $endPoint, $_FILES);

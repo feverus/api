@@ -59,13 +59,16 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
             }
         }
     } elseif ($mode==='inc') {
-        foreach ($baseItem["value"] as $key => $value) {
+        foreach ($formData as $key => $value) {
             if ($key!=='id') {
-                $baseItem["value"]->$key = wrapVarToArray($baseItem["value"]->$key);
                 $formData[$key] = wrapVarToArray($formData[$key]);
-                              
-                //объединяем старые и новые данные
-                $baseItem["value"]->$key = array_merge($baseItem["value"]->$key, $formData[$key]);
+                if (isset($baseItem["value"]->$key)) {
+                    $baseItem["value"]->$key = wrapVarToArray($baseItem["value"]->$key);
+                    //объединяем старые и новые данные
+                    $baseItem["value"]->$key = array_merge($baseItem["value"]->$key, $formData[$key]);
+                } else {
+                    $baseItem["value"]->$key = $formData[$key];
+                }
             }
         }
     } else {
