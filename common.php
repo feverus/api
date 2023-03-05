@@ -51,6 +51,19 @@ function wrapVarToArray($var) {
 }
 
 function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $mode = 'full') {
+    // Проверяем версию данных для этого id
+    if (!isset($formData["version"])) {
+        dropError('version not defined');
+    } else {
+        if (!is_numeric($formData["version"])) {
+            dropError('version must be number');
+        }
+        if ($formData["version"] <= $baseItem["value"]->version) {
+            dropError('the version is outdated, possible resending data');
+        }
+        $baseItem["value"]->version = $formData["version"];
+    }
+
     // Обновляем все поля элемента в базе...
     if ($mode==='full') {
         foreach ($baseItem["value"] as $key => $value) {
@@ -60,7 +73,7 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
         }
     } elseif ($mode==='inc') {
         foreach ($formData as $key => $value) {
-            if ($key!=='id') {
+            if (($key!=='id') && ($key!=='version')) {
                 $formData[$key] = wrapVarToArray($formData[$key]);
                 if (isset($baseItem["value"]->$key)) {
                     $baseItem["value"]->$key = wrapVarToArray($baseItem["value"]->$key);
@@ -75,8 +88,11 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
         exit;
     }
 
+
+    // Сохраняем в файл
     $baseData[$baseItemKey] = $baseItem["value"];
     file_put_contents($baseFileName, json_encode($baseData));
+
     // Выводим ответ клиенту
     echo json_encode($baseData[$baseItemKey]);
 }

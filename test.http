@@ -93,4 +93,32 @@ content-type: application/json
 OPTIONS http://localhost/api/food/675531 HTTP/1.1
 content-type: application/json
 
+
+
+
 ###
+PUT http://localhost/api/order/ZuUpvbvXrBQ HTTP/1.1
+content-type: application/json
+
+{
+    "food": [
+        {"foodId": "2",
+        "price": "50"},
+        {"foodId": "3",
+        "price": "50"}
+    ],
+    "version": "2"
+}
+
+###
+POST http://localhost/api/order HTTP/1.1
+content-type: application/json
+
+{
+    "food": [
+        {"foodId": "2",
+        "price": "50"},
+        {"foodId": "3",
+        "price": "50"}
+    ]
+}

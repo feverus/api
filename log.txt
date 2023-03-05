@@ -1,5 +1,5 @@
 _GET
-order/1
+order/ZuUpvbvXrBQ
 _POST
 
 input
@@ -10,23 +10,5 @@ input
         {"foodId": "3",
         "price": "50"}
     ],
-    "any": "aaa"
+    "version": "2d"
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-GET https://evgeny.fun/eatery/api/food/

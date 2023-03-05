@@ -50,8 +50,12 @@ function route($method, $urlData, $formData, $endPoint, $files) {
             checkAccess($endPoint, 'write');
             updateVersion($endPoint);
 
+            $formData['version'] = 0;
+
             $formData['id'] = ($allowedRouters[$endPoint]['read']===['all']) ?
             time()-1665684000 : generateString();
+
+            $formData = array_reverse($formData);
 
             addItem($baseFileName, $baseData, $formData);
             // Выводим ответ клиенту
