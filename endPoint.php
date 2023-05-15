@@ -12,10 +12,12 @@ function route($method, $urlData, $formData, $endPoint, $files) {
     global $allowedRouters;
 
     if ($endPoint=='_logins') {
-		$role = login($formData);
-        if ($role==='client') {
+		$loginData = login($formData);
+        if ($loginData['role']==='client') {
             header('HTTP/1.0 401');
         }
+            
+        echo json_encode($loginData);
 		return;
 	}
 

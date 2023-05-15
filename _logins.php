@@ -33,7 +33,6 @@ function login($formData) {
 			}
 		}
 	}
-
 	
 	if ($token!=='') {
 		foreach ($logins as $key => $value) {
@@ -50,9 +49,5 @@ function login($formData) {
 		}
 	}
 
-	if ($token!=='') {
-		echo json_encode(['token' => $token, 'role' => $role]);
-	}
-
-	return $role;
+	return ['token' => $token, 'role' => $role];
 }

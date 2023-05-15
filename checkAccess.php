@@ -7,8 +7,11 @@ function checkAccess($endPoint, $action = 'read') {
     if (($action === 'readOneItem') && ($allowedRouters[$endPoint]!=='')) {return true;}
 
     //Если пользователь залогинен, у него должна быть кука. Для отладки откройте доступ для всех.
-    $token = (isset($_COOKIE["token"])) ? htmlspecialchars($_COOKIE["token"]) : '';
-    $role = login(['token' => $token]);
+    $allheaders = getallheaders();
+    
+    $token = (isset($allheaders["Authorization"])) ? $allheaders["Authorization"] : '';
+
+    $role = login(['token' => $token])['role'];
 
     $accessArray = $allowedRouters[$endPoint][$action];
 
