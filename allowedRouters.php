@@ -19,7 +19,7 @@ $defaultRouters = [
 
 //список баз данных
 $customRouters = [
-    'food' => ['read'=>['all'], 'write'=>['all']],
+    'food' => ['read'=>['all'], 'write'=>['admin']],
     'section' => ['read'=>['all'], 'write'=>['admin']],
 	'tag' => ['read'=>['all'], 'write'=>['admin']],
     'order' => ['read'=>['admin', 'panel', 'manager', 'worker'], 'write'=>['all']]

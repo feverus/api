@@ -1,14 +1,5 @@
 _GET
-order/ZuUpvbvXrBQ
+order/Vh9nZGXW7BY
 _POST
 
 input
-{
-    "food": [
-        {"foodId": "2",
-        "price": "50"},
-        {"foodId": "3",
-        "price": "50"}
-    ],
-    "version": "2d"
-}
