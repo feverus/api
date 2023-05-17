@@ -55,7 +55,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
             $formData['version'] = 0;
 
             $formData['id'] = ($allowedRouters[$endPoint]['read']===['all']) ?
-            time()-1665684000 : generateString();
+            strval(time()-1665684000) : generateString();
 
             $formData = array_reverse($formData);
 
