@@ -2,8 +2,8 @@
 
 //обновление версии базы
 function updateVersion($name) {
-    $versionsFileName = 'base/_versions.txt';
-    $versions = json_decode(file_get_contents($versionsFileName));
+    global $VERSIONS_FILE_NAME;
+    $versions = json_decode(fileGetContents($VERSIONS_FILE_NAME));
     if ($versions===NULL) {
         $versions = json_decode(json_encode(array($name => 0)));
     }
@@ -11,5 +11,5 @@ function updateVersion($name) {
         $versions->$name = 0;
     }
     $versions->$name++;
-    file_put_contents($versionsFileName, json_encode($versions));
+    filePutContents($VERSIONS_FILE_NAME, json_encode($versions));
 }

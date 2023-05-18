@@ -3,7 +3,7 @@
 function move($endPoint, $itemId) {
     //удаление из базы элемента
     $fileName = 'base/'.$endPoint.'.txt';
-    $base = file_get_contents($fileName);
+    $base = fileGetContents($fileName);
     $baseData = json_decode($base);
     $baseItem = findById($baseData, $itemId);
     $baseItemKey = $baseItem["key"];
@@ -11,14 +11,16 @@ function move($endPoint, $itemId) {
 
     deleteItem($fileName, $baseData, $baseItemKey, $itemId);
 
+    //закрываем файл с данными
+    closeFileAndUnlock($fileName);
+
     //добавление в архив $baseItem
-    $path = 'base/_archive/' . $endPoint . '/' . date("Y") . '/' . date("n") . '/' ;
-    @mkdir($path, 0755, true);
+    $path = '_archive/' . $endPoint . '/' . date("Y") . '/' . date("n") . '/' ;
+    @mkdir('base/' . $path, 0755, true);
+    testBase($path . date("j"));
     
     $fileName = $path . date("j") . '.txt';
-    testBase('_archive/' . $endPoint . '/' . date("Y") . '/' . date("n") . '/' . date("j"));
-
-    $base = file_get_contents($fileName);
+    $base = fileGetContents($fileName);
     $baseData = json_decode($base);
 
     $baseItem = json_decode(json_encode($baseItem["value"]), true);

@@ -7,5 +7,8 @@ function dropError($message) {
     echo json_encode(array(
         'error' => $message
     ));
+    
+    closeFileAndUnlock('');
+    closeFileAndUnlock('base/_versions.txt');
     exit;
 }

@@ -33,7 +33,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
 	}
 
     $baseFileName = 'base/'.$endPoint.'.txt';
-    $base = file_get_contents($baseFileName);
+    $base = fileGetContents($baseFileName);
     $baseData = json_decode($base);
 
     if (empty($urlData)) {

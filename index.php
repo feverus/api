@@ -1,4 +1,7 @@
 <?php
+ini_set('memory_limit', '1000M');
+$VERSIONS_FILE_NAME = 'base/_versions.txt';
+
 include_once 'dropError.php';
 include_once 'endPoint.php';
 
@@ -12,9 +15,7 @@ file_put_contents('log.txt',
 function getFormData() {
     preg_match('/\{.+\}/s', file_get_contents('php://input'), $json);
     
-    //var_dump($json); exit;
-
-    if (count($json) > 0) {
+    if (!empty($json)) {
         return json_decode($json[0], true);
     }
     return '{}';
@@ -24,8 +25,13 @@ function getFormData() {
 function testBase($fileName) {
     $fileName='base/'.$fileName.'.txt';
     if (!file_exists($fileName)) {
-        file_put_contents($fileName, '');
+        $f = fopen($fileName, "w+");
+    } else {
+        $f = fopen($fileName, "r+");
     }
+    //блокируем файл на время работы скрипта
+    flock($f, LOCK_EX | LOCK_NB);
+    return $f;
 }
 
 
@@ -37,6 +43,7 @@ if ($method=='OPTIONS') {
     header('HTTP/1.1 204 No Content');
 	header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 	header('Access-Control-Allow-Headers: x-requested-with, Content-Type, origin, authorization, accept, x-access-token');
+
     exit;
 }
 
@@ -51,7 +58,6 @@ $urls = explode('/', $url);
 // Определяем базу и url data
 $endPoint = $urls[0];
 
-
 if (!isset($allowedRouters[$endPoint])) {
     dropError('Bad Request');
 }
@@ -65,9 +71,17 @@ if (!empty($urlData) && ($urlData[0]==='archive')) {
 }
 
 //инициализация файлов баз
-testBase($endPoint);
-testBase('_versions');
+if ($endPoint !== '_logins') {
+    $fileEndPoint = testBase($endPoint);
+    if ($endPoint !== '_versions') {
+        $fileVersion = testBase('_versions');
+    } else {
+        $fileVersion = $fileEndPoint;
+    }
+}
+
 // Подключаем файл-роутер и запускаем главную функцию
-
-
 route($method, $urlData, $formData, $endPoint, $_FILES);
+
+closeFileAndUnlock('');
+closeFileAndUnlock('base/_versions.txt');

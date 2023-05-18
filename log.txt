@@ -1,6 +1,5 @@
 _GET
-food/18647656
+_versions
 _POST
 
 input
-{"id":"","name":"111111111","section":"","price":0,"images":[],"info":"","version":1}

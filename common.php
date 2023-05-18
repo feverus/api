@@ -1,5 +1,49 @@
 <?php
 
+function closeFileAndUnlock($fileName) {
+    global $fileEndPoint, $fileVersion, $VERSIONS_FILE_NAME;
+
+    if ($fileName === $VERSIONS_FILE_NAME) {
+        $file = $fileVersion;
+    } else {
+        $file = $fileEndPoint;
+    }
+    @flock($file, LOCK_UN);
+    @fclose($file);
+}
+
+function filePutContents($fileName, $data) {
+    global $fileEndPoint, $fileVersion, $VERSIONS_FILE_NAME;
+    if ($fileName === $VERSIONS_FILE_NAME) {
+        $file = $fileVersion;
+    } else {
+        $file = $fileEndPoint;
+    }
+
+    ftruncate($file, 0);
+    rewind($file);
+    fwrite($file, $data);
+}
+
+function fileGetContents($fileName) {
+    global $fileEndPoint, $fileVersion, $VERSIONS_FILE_NAME;
+    $tryCount = 0;
+
+    if ($fileName === $VERSIONS_FILE_NAME) {
+        $file = $fileVersion;
+    } else {
+        $file = $fileEndPoint;
+    }
+
+    $result = false;
+    while (($result === false) && ($tryCount < 10)) {
+        $result = fread($file, filesize($fileName) + 1);
+        $tryCount++;
+        usleep(100);
+    }
+    return $result;
+}
+
 function generateString($max = 10) {
     $input = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $inputLength = strlen($input);
@@ -37,7 +81,7 @@ function findById($baseData, $itemId) {
 function addItem($baseFileName, $baseData, $formData) {
     // Добавляем элемент в базу...
     $baseData[] = $formData;
-    file_put_contents($baseFileName, json_encode($baseData));
+    filePutContents($baseFileName, json_encode($baseData));
 }
 
 //оборачивает не массив в массив или избавляется от stdClass object
@@ -85,13 +129,15 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
             }
         }
     } else {
+        closeFileAndUnlock('');
+        closeFileAndUnlock('base/_versions.txt');
         exit;
     }
 
 
     // Сохраняем в файл
     $baseData[$baseItemKey] = $baseItem["value"];
-    file_put_contents($baseFileName, json_encode($baseData));
+    filePutContents($baseFileName, json_encode($baseData));
 
     // Выводим ответ клиенту
     echo json_encode($baseData[$baseItemKey]);
@@ -100,7 +146,7 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
 function deleteItem($baseFileName, $baseData, $baseItemKey, $itemId) {
     // Удаляем элемент из базы...
     array_splice($baseData, $baseItemKey, 1);
-    file_put_contents($baseFileName, json_encode($baseData));
+    filePutContents($baseFileName, json_encode($baseData));
     //удаляем изображения
     $path = 'base/_images/' . $itemId . '/';
     @deleteDir($path);
