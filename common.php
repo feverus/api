@@ -112,7 +112,7 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
 
     // Обновляем все поля элемента в базе...
     if ($mode==='full') {
-        foreach ($baseItem["value"] as $key => $value) {
+        foreach ($formData as $key => $value) {
             if ($key!=='id') {
                 $baseItem["value"]->$key = $formData[$key];
             }
