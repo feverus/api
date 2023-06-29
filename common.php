@@ -119,7 +119,7 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
         }
     } elseif ($mode==='inc') {
         // Добавляем отметку времени
-        $formData['time'] = strval(time() - $ZERO_TIME);
+        $formData['time'] = (int)(strval(time() - $ZERO_TIME));
         foreach ($formData as $key => $value) {
             if (($key!=='id') && ($key!=='version')) {
                 $formData[$key] = wrapVarToArray($formData[$key]);

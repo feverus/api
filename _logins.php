@@ -51,5 +51,5 @@ function login($formData) {
 		}
 	}
 
-	return ['token' => $token, 'role' => $role, 'time' => strval(time() - $ZERO_TIME)];
+	return ['token' => $token, 'role' => $role, 'time' => (int)(strval(time() - $ZERO_TIME))];
 }
