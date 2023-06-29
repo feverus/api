@@ -1,5 +1,7 @@
 <?php
 ini_set('memory_limit', '1000M');
+
+$ZERO_TIME = 1665684000;
 $VERSIONS_FILE_NAME = 'base/_versions.txt';
 
 include_once 'dropError.php';
@@ -30,7 +32,8 @@ function testBase($fileName) {
         $f = fopen($fileName, "r+");
     }
     //блокируем файл на время работы скрипта
-    flock($f, LOCK_EX | LOCK_NB);
+    //flock($f, LOCK_EX | LOCK_NB);
+    flock($f, LOCK_EX);
     return $f;
 }
 

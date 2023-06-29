@@ -9,7 +9,7 @@ include_once 'checkAccess.php';
 
 // Роутер
 function route($method, $urlData, $formData, $endPoint, $files) {
-    global $allowedRouters;
+    global $allowedRouters, $ZERO_TIME;
 
     if ($endPoint=='_logins') {
 		$loginData = login($formData);
@@ -54,8 +54,7 @@ function route($method, $urlData, $formData, $endPoint, $files) {
 
             $formData['version'] = 0;
 
-            $formData['id'] = ($allowedRouters[$endPoint]['read']===['all']) ?
-            strval(time()-1665684000) : generateString();
+            $formData['id'] = strval(time() - $ZERO_TIME) . generateString();
 
             $formData = array_reverse($formData);
 

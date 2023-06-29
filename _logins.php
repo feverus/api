@@ -2,6 +2,8 @@
 
 //логин
 function login($formData) {
+	global $ZERO_TIME;
+
 	$token = '';
 	$login = '';
 	$password = '';
@@ -49,5 +51,5 @@ function login($formData) {
 		}
 	}
 
-	return ['token' => $token, 'role' => $role];
+	return ['token' => $token, 'role' => $role, 'time' => strval(time() - $ZERO_TIME)];
 }

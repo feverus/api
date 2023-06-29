@@ -36,7 +36,7 @@ function fileGetContents($fileName) {
     }
 
     $result = false;
-    while (($result === false) && ($tryCount < 10)) {
+    while (($result === false) && ($tryCount < 100)) {
         $result = fread($file, filesize($fileName) + 1);
         $tryCount++;
         usleep(100);
@@ -95,6 +95,8 @@ function wrapVarToArray($var) {
 }
 
 function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $mode = 'full') {
+    global $ZERO_TIME;
+
     // Проверяем версию данных для этого id
     if (!isset($formData["version"])) {
         dropError('version not defined');
@@ -116,6 +118,8 @@ function putItem($baseFileName, $baseData, $formData, $baseItem, $baseItemKey, $
             }
         }
     } elseif ($mode==='inc') {
+        // Добавляем отметку времени
+        $formData['time'] = strval(time() - $ZERO_TIME);
         foreach ($formData as $key => $value) {
             if (($key!=='id') && ($key!=='version')) {
                 $formData[$key] = wrapVarToArray($formData[$key]);
