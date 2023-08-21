@@ -1,5 +1,5 @@
 _GET
-order/22194212LBTzqWFnrLR
+order
 _POST
 
 input

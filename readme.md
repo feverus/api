@@ -71,6 +71,60 @@ http://localhost/api/{database_name}/{id}
 
 ## Работа с изображениями
 Используем роутер *_images*
+<details>
+<summary>Изображения передаются массивом с элементами формата blob. Для конвертации можно использовать следующий код:</summary>
+<code>
+export function converterDataURItoBlob(dataURI: string) {
+	let byteString;
+	let mimeString;
+	let ia;
+	if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+		byteString = atob(dataURI.split(',')[1]);
+	} else {
+		byteString = encodeURI(dataURI.split(',')[1]);
+	}
+	// separate out the mime component
+	mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+	// write the bytes of the string to a typed array
+	ia = new Uint8Array(byteString.length);
+	for (let i = 0; i < byteString.length; i++) {
+		ia[i] = byteString.charCodeAt(i);
+	}
+	return new Blob([ia], { type: mimeString });
+}
+</code>
+</details>
+
+<details>
+<summary>Вот пример функции для загрузки с использованием npm пакетов ky и react-images-uploading:</summary>
+import { ImageListType } from 'react-images-uploading'
+<code>
+export async function uploadImageApi (data:ImageListType, id: string): Promise<Array<string>|string > {
+	const url = urlApi + "_images/" +id
+	const formData = new FormData()
+	let tempBlob:Blob|undefined
+	data.forEach(({ dataURL, file }, index) => {
+		if (dataURL!==undefined) {
+			tempBlob = converterDataURItoBlob(dataURL)
+			if (tempBlob!==undefined) formData.append(index.toString(), tempBlob, Date.now().toString() + '_' + index.toString() + '_' + file?.name)
+		}
+	})
+	try {	
+		let answer:any
+		answer = await ky.post(url, {body: formData})
+		let json = await answer.json()		
+		json.forEach((element:string, num:number) => {
+			json[num] = urlApi + element
+		})
+		return json
+	} catch (error) {
+		return (error as Error).message
+	}
+}
+</code>
+Возвращается массив ссылок на загруженные файлы.
+</details>
+
 
 ### Добавить элементы
 **метод POST**
